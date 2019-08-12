@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style>
+.mcolor{
+	color:red
+}
+.myellow{
+	color:yellow
+}
+</style>
+</head>
+<body>
+	<div id="app">
+		{{ message }}
+		<div v-bind:title="stitle">
+			鼠标悬停几秒钟查看此处动态绑定的提示信息！
+		</div>
+		<div>
+			隐藏:<p v-if="see">内容1</p>
+			<p v-else>Oh no 😢</p>
+			<br>
+			显示:
+		</div>
+		<div>
+			循环显示
+			<ol>
+				<li v-for="model in devices">{{model.model}}</li>
+			</ol>
+			<p>选择的内容{{selVal}}</p>
+			<select v-model="selVal">
+				<option v-for="dev in devices" :value="dev.model"  name="selValue">{{dev.name}}</option>
+			</select>
+		</div>
+
+		<div>
+			<p>
+				翻转message{{message}}
+			</p>
+			<button v-on:click="reverseMessage(123)">翻转</button>
+		</div>
+		<div>
+			<input v-model="message">
+		</div>
+		<div>
+			自定义组件:
+			<ol>
+				<myli v-for="item in devices"
+					  v-bind:todo="item"
+					  v-bind:key=item.id	
+					>
+				</myli>
+			</ol>
+		</div>
+		<div>
+			<p>原样显示:{{rawHtml}}</p>
+			<p>解析html显示:<span v-html="rawHtml"></span></p>
+		</div>
+		<div v-bind:haha="'dv-' + countVal">
+			<p>表达式计算:{{countVal}}+1= {{countVal*1+1}}</p>
+			<p>翻转:{{countVal}}: {{countVal.split('').reverse().join('') }}</p>
+			<p>翻转:{{countVal}}: {{countVal=='123'?'是123':'不是123' }}</p>
+		</div>
+		<div>
+			<p>firstName:{{firstName}}</p>
+			<p>lastName:{{lastName}}</p>
+			<p>fullName:{{fullName}}</p>
+			<button @click="setNewFullName">修改全名</button>
+		</div>
+
+		<button onclick="add();">提交</button>
+		<hr style="width: 300px">
+		<p>样式css</p>
+		<div v-bind:class="{mcolor:red}">
+			232
+		</div>
+		<p>通过计算属性改变样式</p>
+		<div v-bind:class="classObject">
+			11111
+		</div>
+		<p>style</p>
+		<div v-bind:style="styleObject">423423423</div>
+	</div>
+	
+</body>
+<script type="text/javascript">
+
+Vue.component('myli', {
+  // myli 组件现在接受一个
+  // "prop"，类似于一个自定义特性。
+  // 这个 prop 名为 todo。
+  props: ['todo'],
+  template: '<li>{{ todo.name }}</li>'
+})
+
+
+var app2 = new Vue({
+  el: '#app',
+  data: {
+		message: '页面加载于1 ' + new Date().toLocaleString(),
+		stitle: new Date().toLocaleString(),
+		see:true,
+		selVal:'',
+		countVal:'123',
+		devices:[
+			{ model: 'TF1' ,name:"设备1"},
+				{ model: 'TF2' ,name:"设备2" },
+				{ model: 'TF3' ,name:"设备3" }
+		],
+		rawHtml:'<span style="color: red">This should be red.</span>',
+		firstName:"Tom",
+		lastName:"Cat",
+		red:false,
+		styleObject: {
+			color: 'red',
+			fontSize: '18px'
+		},
+  },
+  created:function(){
+	    //钩子可以用来在一个实例被创建之后执行代码：
+		// 需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。
+		//同时在这个过程中也会运行一些叫做生命周期钩子的函数，这给了用户在不同阶段添加自己的代码的机会。
+		// `this` 指向 vm 实例
+		console.log('加载完成: amessage is: ' + this.message)
+	},
+  methods: {
+    reverseMessage: function (arg) {
+				console.log(arg)
+      	this.message = this.message.split('').reverse().join('')
+		},
+		setNewFullName:function(){
+			this.fullName="Tom Jerry";
+		}
+  },
+  computed:{
+		fullName:{
+			//显式写明 get set方法,默认只有get方法,如classObject方法
+			//fullName 作为计算属性不可以再出现在data中,会报错
+			// getter
+			get: function () {
+				return this.firstName + ' ' + this.lastName
+			},
+			// setter
+			set: function (newValue) {
+				var names = newValue.split(' ')
+				this.firstName = names[0]
+				this.lastName = names[names.length - 1]
+			}
+			},
+			classObject:function(){
+				return {
+					myellow: !this.red,
+				}
+			}
+		}
+})
+function add(){
+	app2.red=!app2.red;
+	console.log(app2)
+	console.log(app2.devices.push({ model: 'TF3'+ new Date().toLocaleString() }))
+}
+
+</script>
+</html>
