@@ -19,7 +19,8 @@
 			鼠标悬停几秒钟查看此处动态绑定的提示信息！
 		</div>
 		<div>
-			隐藏:<p v-if="see">内容1</p>
+			隐藏:v-else 元素必须紧跟在带 v-if 或者 v-else-if 的元素的后面，否则它将不会被识别。
+			<p v-if="see">内容1</p>
 			<p v-else>Oh no 😢</p>
 			<br>
 			显示:
@@ -82,6 +83,16 @@
 		</div>
 		<p>style</p>
 		<div v-bind:style="styleObject">423423423</div>
+
+		<div>
+			<p>v-for demo 	{{ index }}. {{ name }}: {{ value }} 都是可选的</p>
+			<div v-for="(value, name, index) in object">
+				{{ index }}. {{ name }}: {{ value }}
+			</div>
+			<div v-for="(val) in object">
+					 {{ val }}
+				</div>
+		</div>
 	</div>
 	
 </body>
@@ -105,10 +116,15 @@ var app2 = new Vue({
 		selVal:'',
 		countVal:'123',
 		devices:[
-			{ model: 'TF1' ,name:"设备1"},
+				{ model: 'TF1' ,name:"设备1"},
 				{ model: 'TF2' ,name:"设备2" },
 				{ model: 'TF3' ,name:"设备3" }
 		],
+		object: {
+      title: 'How to do lists in Vue',
+      author: 'Jane Doe',
+      publishedAt: '2016-04-10'
+    },
 		rawHtml:'<span style="color: red">This should be red.</span>',
 		firstName:"Tom",
 		lastName:"Cat",
