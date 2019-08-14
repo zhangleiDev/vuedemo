@@ -85,7 +85,7 @@
 		<div v-bind:style="styleObject">423423423</div>
 
 		<div>
-			<p>v-for demo 	{{ index }}. {{ name }}: {{ value }} 都是可选的</p>
+			<p>"v-for demo 	{ { index }}. { { name }}: { { value }}" 都是可选的</p>
 			<div v-for="(value, name, index) in object">
 				{{ index }}. {{ name }}: {{ value }}
 			</div>
@@ -93,8 +93,55 @@
 					 {{ val }}
 				</div>
 		</div>
+		<div>
+			<p>指令格式</p>
+				<ul>
+						<li
+							is="todo-item"
+							v-for="(todo, index) in todos"
+							v-bind:key="todo.id"
+							v-bind:title="todo.title"
+							v-on:remove="todos.splice(index, 1)"
+						></li>
+						<!-- v-on:remove="show(index)" 
+							可以调用方法,也可以直接用表达式操作元素
+						-->
+					</ul>
+		</div>
+		<div>
+				阻止单击事件继续传播{{clickCount}}次,href="###"可以阻止"/<a/>"跳转
+				<a v-on:click.stop="clickCount+=1" href="###">阻止</a>
+				<a href="###">不阻止</a>
+		</div>
+		<div>
+				键盘事件监听:点击了enter{{clickCount}}次
+				<input v-on:keyup.enter="clickCount+=1">
+		</div>
+		<div>
+			<p>表单:</p>
+			<input
+				type="checkbox"
+				v-model="toggle"
+				true-value="1"
+				false-value="2"
+			>
+			"toggle is"{{toggle}}
+			<br>
+			添加 lazy 修饰符，从而转变为使用 change 事件进行同步：{{msg}}
+			<input v-model.lazy="msg" >
+			<br>
+			自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符
+			<input v-model.trim="msg">
+			<br>
+			如果想自动将用户的输入值转为数值类型，可以给 v-model 添加 number 修饰符：{{age}}
+			<input v-model.number="age" type="number">
+			<br>
+			<br>
+		</div>
+		
+
+
 	</div>
-	
 </body>
 <script type="text/javascript">
 
@@ -105,16 +152,30 @@ Vue.component('myli', {
   props: ['todo'],
   template: '<li>{{ todo.name }}</li>'
 })
+Vue.component('todo-item', {
+  template: '\
+    <li>\
+      {{ title }}\
+      <button v-on:click="$emit(\'remove\')">Remove</button>\
+    </li>\
+  ',
+  props: ['title']
+})
 
 
 var app2 = new Vue({
   el: '#app',
   data: {
+		age:12,
+		msg:"sdfgwe",
 		message: '页面加载于1 ' + new Date().toLocaleString(),
 		stitle: new Date().toLocaleString(),
 		see:true,
 		selVal:'',
 		countVal:'123',
+		clickCount:0,
+		toggle:"1",
+		toggle2:"wef",
 		devices:[
 				{ model: 'TF1' ,name:"设备1"},
 				{ model: 'TF2' ,name:"设备2" },
@@ -133,6 +194,20 @@ var app2 = new Vue({
 			color: 'red',
 			fontSize: '18px'
 		},
+		todos: [
+      {
+        id: 1,
+        title: 'Do the dishes',
+      },
+      {
+        id: 2,
+        title: 'Take out the trash',
+      },
+      {
+        id: 3,
+        title: 'Mow the lawn'
+      }
+    ],
   },
   created:function(){
 	    //钩子可以用来在一个实例被创建之后执行代码：
@@ -148,7 +223,10 @@ var app2 = new Vue({
 		},
 		setNewFullName:function(){
 			this.fullName="Tom Jerry";
-		}
+		},
+		show:function(arg){
+			alert(arg)
+		},
   },
   computed:{
 		fullName:{
