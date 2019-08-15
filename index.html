@@ -138,9 +138,18 @@
 			<br>
 			<br>
 		</div>
-		
+		<button-counter></button-counter>
+		<button-counter></button-counter>
+		<alert-box>
+				{{msg}}
+		</alert-box>
 
-
+		<base-input
+		v-model="username"
+		required
+		placeholder="Enter your username"
+		label="姓名"
+		></base-input>
 	</div>
 </body>
 <script type="text/javascript">
@@ -161,11 +170,42 @@ Vue.component('todo-item', {
   ',
   props: ['title']
 })
-
+Vue.component('button-counter', {
+  data: function () {//一个组件的 data 选项必须是一个函数，因此每个实例可以维护一份被返回对象的独立的拷贝：
+    return {
+      count: 0
+    }
+  },
+  template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+})
+Vue.component('alert-box', {
+  template: `
+    <div class="demo-alert-box">
+      <strong>Error!</strong>
+      <slot></slot>
+    </div>
+  `
+})
+//$attrs 可以将其它属性赋值到dom元素上
+Vue.component('base-input', {
+  inheritAttrs: false,//阻止继承根属性
+  props: ['label', 'value'],
+  template: `
+    <label>
+      {{ label }}
+      <input
+        v-bind="$attrs"
+        v-bind:value="value"
+        v-on:input="$emit('input', $event.target.value)"
+      >
+    </label>
+  `
+})
 
 var app2 = new Vue({
   el: '#app',
   data: {
+		username:"哈哈",
 		age:12,
 		msg:"sdfgwe",
 		message: '页面加载于1 ' + new Date().toLocaleString(),
