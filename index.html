@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title></title>
+	<link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <style>
 .mcolor{
@@ -72,7 +73,7 @@
 		</div>
 
 		<button onclick="add();">提交</button>
-		<hr style="width: 300px">
+		<hr style="width: 1500px">
 		<p>样式css</p>
 		<div v-bind:class="{mcolor:red}">
 			232
@@ -127,7 +128,7 @@
 			>
 			"toggle is"{{toggle}}
 			<br>
-			添加 lazy 修饰符，从而转变为使用 change 事件进行同步：{{msg}}
+			添加 lazy 修饰符，从而转变为使用 change 事件进行同步：{{msg | capitalize}}
 			<input v-model.lazy="msg" >
 			<br>
 			自动过滤用户输入的首尾空白字符，可以给 v-model 添加 trim 修饰符
@@ -143,6 +144,7 @@
 		<alert-box>
 				{{msg}}
 		</alert-box>
+		
 
 		<base-input
 		v-model="username"
@@ -150,9 +152,52 @@
 		placeholder="Enter your username"
 		label="姓名"
 		></base-input>
+		<zl-hr>自定义组件</zl-hr>
+		
+		{{lovingVue}}
+		<base-checkbox v-model="lovingVue"></base-checkbox>
+		
+		<zl-hr>动画</zl-hr>
+		<button @click="shown = !shown">
+				Toggle render
+			</button>
+			<transition
+				name="custom-classes-transition"
+				enter-active-class="animated tada"
+				leave-active-class="animated bounceOutRight"
+			>
+				<p v-if="shown">hello</p>
+			</transition>
+		
+	
+	
+	
 	</div>
 </body>
 <script type="text/javascript">
+/**
+ * 
+ * 一个组件上的 v-model 默认会利用名为 value 的 prop 和名为 input 的事件，
+ * 但是像单选框、复选框等类型的输入控件可能会将 value 
+ * 特性用于不同的目的。model 选项可以用来避免这样的冲突：
+ * */
+Vue.component('base-checkbox', {
+  model: {
+    prop: 'checked',
+    event: 'change'
+  },
+  props: {
+    checked: Boolean
+  },
+  template: `
+    <input
+      type="checkbox"
+      v-bind:checked="checked"
+      v-on:change="$emit('change', $event.target.checked)"
+    >
+  `
+})
+
 
 Vue.component('myli', {
   // myli 组件现在接受一个
@@ -202,9 +247,29 @@ Vue.component('base-input', {
   `
 })
 
+//$attrs 可以将其它属性赋值到dom元素上
+Vue.component('zl-hr', {
+	template: `
+	<div style="text-align:center">
+		<hr style="width: 100%">
+		<strong><slot></slot></strong>
+		<hr style="width: 100%">
+	</div>
+  `
+})
+/////////////////////////////过滤器/////////////////////////////////////
+Vue.filter('capitalize', function (value) {
+  if (!value) return ''
+  value = value.toString()
+  return value.charAt(0).toUpperCase() + value.slice(1)
+})
+/////////////////////////////过滤器/////////////////////////////////////
+
 var app2 = new Vue({
   el: '#app',
   data: {
+		shown:false,
+		lovingVue:true,
 		username:"哈哈",
 		age:12,
 		msg:"sdfgwe",
