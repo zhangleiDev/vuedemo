@@ -38,31 +38,33 @@ var Book = sequelize.define('book', {
 //     console.log('failed: ' + err);
 // });
 
-(async () => {
-    try{
-        var dog = await Book.create({
-            name: "微服务框架333",
-            price: 3333
-        });
-        console.log('created: ' + JSON.stringify(dog));
-    }catch(err){
-        console.log(err);
-    }
+//新增数据
+// (async () => {
+//     try{
+//         var dog = await Book.create({
+//             name: "微服务框架333",
+//             price: 3333
+//         });
+//         console.log('created: ' + JSON.stringify(dog));
+//     }catch(err){
+//         console.log(err);
+//     }
     
-})();
+// })();
 
+//单条查询
+var queryByid = async (id) => {
+            try{
+        
+                let book = await Book.findOne({
+                    where:{id:id}
+                });
+                return book;
+            }catch(err){
+                console.log(err);
+            }
+        };
 
-(async () => {
-    try{
-        let book = await Book.findOne({
-            where:{id:7}
-        });
-        console.log(JSON.stringify(book));
-
-        let model = await Book.findById(7);
-        console.log(JSON.stringify(model));
-    }catch(err){
-        console.log(err);
-    }
-    
-})();
+module.exports={
+    queryByid
+}
