@@ -17,7 +17,7 @@ app.use(async (ctx, next) => {
     ctx.response.type = ctx.response.type || 'application/json';
     // var age = ctx.params.age;
     await next(); // 调用下一个middleware,执行完成前是阻塞状态
-    console.log(end)
+    console.log('end')
 });
 //相当于之前的 app.use(routs)
 

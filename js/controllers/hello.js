@@ -8,14 +8,11 @@ var products = [{
 }];
 var dao = require("../db.js")
 var fn_hello = async (ctx, next) => {
-    
-        dao.queryByid(ctx.params.id).then(async (result) =>{
-            // 设置Response Body:
-            ctx.response.body = {
-                book: result
-            };
-        });
-        
+    let book= await dao.queryByid(ctx.params.id);
+    ctx.response.body = {
+        book: book
+    };
+    console.log(1111111111)
         
 };
 var del_hello = async (ctx, next) => {
