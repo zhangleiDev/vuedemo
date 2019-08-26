@@ -52,6 +52,77 @@ var Book = sequelize.define('book', {
     
 // })();
 
+var print=(data)=>{
+    console.log('created: ' + JSON.stringify(data));
+}
+
+//自定义sql：查询
+// (async () => {
+//     try{
+//         let book= await sequelize.query("select * from book where id=?", {
+//             replacements:[1],   
+//             type : sequelize.QueryTypes.SELECT
+//         });
+//         print(book)
+//     }catch(err){
+//         console.log(err);
+//     }
+// })();
+
+//自定义sql：新增
+(async () => {
+    try{
+        //result: [20,1],返回新增记录的主键值和影响条数
+        let result= await sequelize.query("insert into book (id,name,price) values(:id,:name,:price)", {
+            replacements:{
+                id:20,
+                name:"Mysql",
+                price:1234
+            },   
+            type : sequelize.QueryTypes.INSERT
+        });
+        print(result)
+    }catch(err){
+        console.log(err);
+    }
+})();
+
+//自定义sql：更新
+// (async () => {
+//     try{
+        
+//         let result= await sequelize.query("update book set name=:name where id=:id", {
+//             replacements:{
+//                 name:"InnoDb",
+//                 id:20
+//             },   
+//             type : sequelize.QueryTypes.UPDATE
+//         });
+//         print(result)
+//     }catch(err){
+//         console.log(err);
+//     }
+// })();
+
+// 自定义sql：删除
+(async () => {
+    try{
+        
+        let result= await sequelize.query("delete from book where id=:id", {
+            replacements:{
+                id:20
+            },   
+            type : sequelize.QueryTypes.DElETE
+        });
+        print(result)
+    }catch(err){
+        console.log(err);
+    }
+})();
+
+
+
+
 //单条查询
 var queryByid = async (id) => {
             try{
