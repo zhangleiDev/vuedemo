@@ -32,7 +32,7 @@ async function executeDb(callback){
 
      MongoClient.connect(config_mongo.url, { useNewUrlParser: true,useUnifiedTopology: true }, function(err, db) {
         if (err) {
-            db.close();
+            console.log(11111111111111111111)
             throw err;
         };
         var dbo = db.db(config_mongo.database);
@@ -42,24 +42,24 @@ async function executeDb(callback){
         } catch (error) {
             console.log(error)
         }
+        console.log(2222222222222222222)
         db.close();
     });
 }
 
 (()=>{
-    executeDb((db)=>{
-        var myobj = { name: "菜鸟教程", url: "www.runoob",date:444 };
-        db.collection("site").insertOne(myobj, function(err, res) {
-            if (err) throw err;
-        });
-    })
+    // executeDb((db)=>{
+    //     var myobj = { name: "菜鸟教程", url: "www.runoob",date:444 };
+    //     db.collection("site").insertOne(myobj, function(err, res) {
+    //         if (err) throw err;
+    //     });
+    // })
 
     executeDb((db)=>{
 
-        dbo.collection("site"). find({}).toArray(function(err, result) { // 返回集合中所有数据
+        db.collection("site"). find({date:333}).toArray(function(err, result) { // 返回集合中所有数据
             if (err) throw err;
             console.log(result);
-            db.close();
         });
     })
     
