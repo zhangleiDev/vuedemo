@@ -79,8 +79,9 @@ function inOrOffWork(type){
         }
     }
     var dakaTimes = descStartsWith("打卡时间").find();
-    for(var i=0;i<dakaTimes.element;i++){
-        if(i=0){
+    for(var i=0;i<dakaTimes.length;i++){
+        log("已经完成打卡！")
+        if(i==0){
             log("上班时间："+dakaTimes[i].parent().child(2).desc())
         }else{
             log("下班时间："+dakaTimes[i].parent().child(2).desc())
@@ -96,7 +97,7 @@ function backDingHome(){
 }
 
 
-start(1)
+start(2)
 
 
 
