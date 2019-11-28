@@ -78,6 +78,7 @@ function inOrOffWork(type){
             log("完成下班打卡")
         }
     }
+    sleep(3000)
     var dakaTimes = descStartsWith("打卡时间").find();
     for(var i=0;i<dakaTimes.length;i++){
         log("已经完成打卡！")
